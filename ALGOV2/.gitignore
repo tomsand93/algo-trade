@@ -35,6 +35,6 @@ Thumbs.db
 
 # Keep these
 !.gitignore
-!README.md
+!*.md
 !requirements.txt
 !.env.example
