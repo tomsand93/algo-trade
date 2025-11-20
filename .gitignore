@@ -1,6 +1,9 @@
 # Ignore everything
 *
 
-# But not these:
+# Do not ignore these:
 !.gitignore
 !*.py
+
+# Allow all folders to be scanned recursively
+!*/
