@@ -1,8 +1,40 @@
-# Ignore everything
-*
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
 
-# Do NOT ignore .gitignore itself
+# API Keys and Secrets
+.env
+config_local.py
+
+# Data and logs
+data/
+logs/
+*.csv
+*.xlsx
+*.json
+*.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Keep these
 !.gitignore
-
-# Do NOT ignore Python files
-!*.py
+!README.md
+!requirements.txt
+!.env.example
