@@ -9,7 +9,7 @@ Provides:
 """
 import os
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from decimal import Decimal
 from typing import Optional, Dict, List, Any
 from dataclasses import dataclass
@@ -88,7 +88,7 @@ class AlpacaPaperClient:
     def _verify_paper_account(self) -> None:
         """Verify that we're connected to a paper trading account."""
         try:
-            account = self.get_account()
+            self.get_account()
             # Check if this is a paper account
             # Alpaca doesn't explicitly mark paper accounts in API response,
             # but we verify by checking the base URL

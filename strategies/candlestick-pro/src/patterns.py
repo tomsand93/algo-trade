@@ -368,7 +368,7 @@ class PatternDetector:
             "direction": direction,
             "pattern_index": i,
             "invalidation_price": invalidation_price,
-            "entry_trigger": f"Market entry on next candle open",
+            "entry_trigger": "Market entry on next candle open",
             "confidence": confidence,
             "context_score": context_score,
             "candles": (c1, c2),
@@ -462,7 +462,7 @@ class PatternDetector:
             "direction": direction,
             "pattern_index": i,
             "invalidation_price": invalidation_price,
-            "entry_trigger": f"Market entry on next candle open",
+            "entry_trigger": "Market entry on next candle open",
             "confidence": confidence,
             "context_score": context_score,
             "wick_to_body_ratio": wick_to_body,
@@ -709,9 +709,9 @@ class PatternDetector:
             "contraction_ratio": inside.range / mother.range,
             "candles": (mother, inside),
             "checks": [
-                f"Inside bar contained within mother bar",
+                "Inside bar contained within mother bar",
                 f"Range contraction: {inside.range/mother.range:.2%} <= {cfg['contraction_max']:.0%}",
-                f"At decision point (S/R nearby)",
+                "At decision point (S/R nearby)",
                 f"Volume confirmed (score: {vol_score:.2f})",
             ],
         }
@@ -830,7 +830,7 @@ class PatternDetector:
             f"Candle 1 bearish: {not c1.is_bullish}, body: {c1.body_ratio:.2%} >= {cfg['first_body_ratio_min']:.0%}",
             f"Candle 2 star: body {c2.body_ratio:.2%} <= {cfg['star_body_ratio_max']:.0%}",
             f"Candle 3 bullish: {c3.is_bullish}, body {c3.body_ratio:.2%} >= {cfg['confirm_body_ratio_min']:.0%}",
-            f"C3 close above C1 midpoint",
+            "C3 close above C1 midpoint",
         ]
 
     def _get_evening_star_checks(self, c1: Candle, c2: Candle, c3: Candle, cfg: Dict) -> List[str]:
@@ -838,5 +838,5 @@ class PatternDetector:
             f"Candle 1 bullish: {c1.is_bullish}, body: {c1.body_ratio:.2%} >= {cfg['first_body_ratio_min']:.0%}",
             f"Candle 2 star: body {c2.body_ratio:.2%} <= {cfg['star_body_ratio_max']:.0%}",
             f"Candle 3 bearish: {not c3.is_bullish}, body {c3.body_ratio:.2%} >= {cfg['confirm_body_ratio_min']:.0%}",
-            f"C3 close below C1 midpoint",
+            "C3 close below C1 midpoint",
         ]

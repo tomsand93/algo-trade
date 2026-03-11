@@ -8,12 +8,11 @@ Handles:
 - Risk limits (max positions, sector exposure)
 """
 import logging
-from collections import defaultdict
-from datetime import date, datetime
+from datetime import date
 from decimal import Decimal
-from typing import List, Optional, Dict, Set, Tuple
+from typing import List, Optional, Dict, Tuple
 
-from ..normalize.schema import Position, TradeResult, PortfolioSnapshot, Fill
+from ..normalize.schema import Position, TradeResult, PortfolioSnapshot
 
 logger = logging.getLogger(__name__)
 

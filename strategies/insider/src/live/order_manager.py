@@ -7,12 +7,12 @@ Handles:
 - Exit order management
 """
 import logging
-from datetime import date, datetime
+from datetime import date
 from decimal import Decimal
 from typing import List, Dict, Any, Optional, Set
 from dataclasses import dataclass, field
 
-from .alpaca_paper import AlpacaPaperClient, AlpacaOrder, AlpacaPosition
+from .alpaca_paper import AlpacaPaperClient
 from ..normalize.schema import InsiderSignal
 
 logger = logging.getLogger(__name__)

@@ -6,7 +6,7 @@ based on price structure and volatility.
 """
 from typing import List, Tuple, Optional
 import math
-from src.models import Candle, TradingIdea, Direction, PatternType, SupportResistanceLevel
+from src.models import Candle, TradingIdea, Direction, SupportResistanceLevel
 from src.indicators import compute_atr, get_nearest_sr_levels
 
 EPSILON = 1e-10
@@ -317,10 +317,10 @@ class TradeManager:
 
         # Filter 3: Not in middle of range (no clear S/R nearby)
         if idea.sr_levels_nearby:
-            passed_filters.append(f"S/R confluence present")
+            passed_filters.append("S/R confluence present")
         else:
             # Warning but not hard fail
-            passed_filters.append(f"S/R weak (proceed with caution)")
+            passed_filters.append("S/R weak (proceed with caution)")
 
         # Filter 4: Pattern at meaningful location
         if idea.confidence_score >= 0.5:

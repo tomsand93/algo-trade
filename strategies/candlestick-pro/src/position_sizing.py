@@ -18,7 +18,6 @@ Where:
 
 from typing import Optional, List, Tuple
 from dataclasses import dataclass
-import math
 
 
 @dataclass

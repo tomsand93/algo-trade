@@ -19,7 +19,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from datetime import datetime, timedelta, timezone
 from typing import List, Optional
-import pandas as pd
 
 try:
     from alpaca.data.historical.stock import StockHistoricalDataClient
@@ -94,7 +93,7 @@ class AlpacaDataFetcher:
             secret_key=self.api_secret
         )
 
-        print(f"[Alpaca] Initialized with alpaca-py SDK")
+        print("[Alpaca] Initialized with alpaca-py SDK")
 
     def fetch_candles(
         self,

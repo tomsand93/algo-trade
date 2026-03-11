@@ -7,8 +7,7 @@ from typing import List, Dict, Tuple
 import math
 from src.models import Candle, TimeFrameAnalysis, TimeFrameStyle
 from src.indicators import (
-    compute_atr, detect_trend, calculate_noise_score,
-    get_volatility_regime, detect_support_resistance
+    compute_atr, detect_trend, calculate_noise_score
 )
 
 EPSILON = 1e-10

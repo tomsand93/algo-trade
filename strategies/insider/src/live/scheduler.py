@@ -22,7 +22,6 @@ from .order_manager import OrderManager
 from .risk_checks import RiskManager
 from ..signals.single_buy_threshold import SingleBuyThresholdSignal
 from ..data.price_provider import get_price_provider
-from ..data.sec_api_client import SECAPIClient
 from ..normalize.form4_parser import normalize_transactions
 
 logger = logging.getLogger(__name__)
@@ -276,7 +275,7 @@ class PaperTradingBot:
         while self.running:
             try:
                 # Run one iteration
-                status = self.run_once()
+                self.run_once()
 
                 # Check iteration limit
                 iteration += 1
@@ -305,7 +304,6 @@ class PaperTradingBot:
 def main():
     """Main entry point for paper trading bot."""
     import yaml
-    from decimal import Decimal
 
     # Load config
     config_path = sys.argv[1] if len(sys.argv) > 1 else "configs/config.yaml"

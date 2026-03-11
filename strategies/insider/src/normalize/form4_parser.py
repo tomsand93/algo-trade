@@ -9,9 +9,8 @@ import logging
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List, Optional, Dict, Any
-import re
 
-from .schema import InsiderTransaction, TransactionCode, TransactionType
+from .schema import InsiderTransaction
 
 logger = logging.getLogger(__name__)
 

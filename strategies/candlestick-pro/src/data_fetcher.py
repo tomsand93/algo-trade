@@ -5,7 +5,7 @@ Fetches real OHLCV data from exchanges for multiple timeframes.
 """
 from typing import List, Dict, Optional
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 import ccxt
 from src.models import Candle
 

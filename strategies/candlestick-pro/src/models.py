@@ -7,7 +7,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from typing import Optional, List, Tuple
-import math
 
 
 class Direction(Enum):
@@ -174,7 +173,7 @@ class TradingIdea:
             f"Stop Loss: ${self.stop_loss_price:.6f}",
             f"  Reasoning: {self.stop_loss_reasoning}",
             "",
-            f"Take Profit(s):",
+            "Take Profit(s):",
         ]
         for i, tp in enumerate(self.take_profit_prices, 1):
             output.append(f"  TP{i}: ${tp:.6f}")
@@ -182,7 +181,7 @@ class TradingIdea:
 
         output.extend([
             "",
-            f"Risk Metrics:",
+            "Risk Metrics:",
             f"  Risk: ${self.risk_amount:.6f}",
             f"  Reward: ${self.reward_amount:.6f} (primary TP)",
             f"  R:R Ratio: 1:{self.rr_ratio:.2f}",

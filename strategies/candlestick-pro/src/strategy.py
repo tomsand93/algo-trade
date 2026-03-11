@@ -8,6 +8,7 @@ from typing import Dict, List, Optional
 import math
 from src.models import (
     Candle, TradingIdea, PatternType, Direction, TimeFrameStyle,
+    SupportResistanceLevel,
     BacktestConfig, BacktestResult
 )
 from src.indicators import (
@@ -117,7 +118,7 @@ class CandlestickStrategy:
     def _find_best_pattern(
         self,
         candles: List[Candle],
-        sr_levels: List['SupportResistanceLevel'],
+        sr_levels: List[SupportResistanceLevel],
         rsi_values: Optional[List[float]] = None,
         ema9: Optional[List[float]] = None,
         ema21: Optional[List[float]] = None,
@@ -435,7 +436,6 @@ class CandlestickStrategy:
                     if not exit_result['is_partial']:
                         # Combine all partial exits into a single trade record
                         total_pnl = sum(e['total_pnl'] for e in partial_exits)
-                        total_size = position.original_size
                         avg_entry = position.entry_price
 
                         # Calculate weighted average exit

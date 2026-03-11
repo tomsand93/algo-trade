@@ -9,11 +9,10 @@ A complete, mechanical trading system for 1-minute candles with:
 - Session and news filters
 """
 
-from typing import Dict, List, Optional, Tuple, Literal
+from typing import List, Optional, Literal
 from dataclasses import dataclass
 from enum import Enum
-import math
-from src.models import Candle, Direction, PatternType
+from src.models import Candle, Direction
 
 
 # =============================================================================
@@ -555,8 +554,6 @@ class OneMinuteCandlestickStrategy:
         candles_5m: Optional[List[Candle]] = None
     ) -> 'OneMinuteCandlestickStrategy.Indicators':
         """Calculate all required indicators."""
-        latest = candles_1m[-1]
-
         # VWAP (session-based)
         vwap = self._calculate_vwap_session(candles_1m)
 
@@ -710,7 +707,6 @@ class OneMinuteCandlestickStrategy:
         RANGE regime: Check Setup B2 (VWAP Rejection) and C (ORB if early)
         """
         candidates = []
-        current_candle = candles[-1]
         i = len(candles) - 1
 
         # Check trend direction for TREND regime

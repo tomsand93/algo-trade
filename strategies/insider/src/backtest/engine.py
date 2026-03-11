@@ -12,14 +12,13 @@ import logging
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from decimal import Decimal
-from typing import List, Optional, Dict, Any, Tuple
+from typing import List, Optional, Dict, Any
 from pathlib import Path
 import json
 
 from ..normalize.schema import (
-    InsiderSignal, PriceBar, TradeResult, PortfolioSnapshot
+    InsiderSignal, PriceBar, TradeResult
 )
-from ..signals.single_buy_threshold import SingleBuyThresholdSignal
 from ..data.price_provider import get_price_provider
 from .execution import ExecutionModel
 from .portfolio import Portfolio
