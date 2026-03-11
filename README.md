@@ -1,28 +1,40 @@
 # algo-trade
 
-Curated trading research repository focused on active strategy code and supporting infrastructure.
+Standalone trading repository for active strategy code and supporting paper-trading infrastructure.
 
-## What Is In Scope
+## Scope
 
-- `strategies/`: active strategy modules with their own code, tests, and documentation
-- `resources/multi-account-manager/`: orchestration layer for running multiple strategies on separate paper accounts
-- `docs/`: repository-facing notes and plans
+This repository keeps the Git-facing surface focused on:
 
-Non-core local folders such as old archives, research scratch space, and legacy strategy bundles are preserved on disk but are not intended to be part of the Git-facing repository.
+- active strategy modules under `strategies/`
+- shared execution and orchestration tooling under `resources/`
+- lightweight repository documentation under `docs/`
+
+Legacy research, archived experiments, local outputs, credentials, and machine-specific files are intentionally excluded from Git through `.gitignore`.
 
 ## Active Modules
 
 ### Strategies
 
-- `strategies/candlestick-pro/`: BTC/USD candlestick-pattern strategy
-- `strategies/fvg-breakout/`: fair-value-gap breakout strategy
-- `strategies/insider/`: insider-buy signal pipeline from SEC filings to execution
-- `strategies/orderbook/`: order-book imbalance strategy
-- `strategies/stock-screener/`: modular stock screener with ranking and optional news enrichment
+- `strategies/insider/`  
+  SEC insider-buy signal pipeline with backtest and paper-trading entry points
 
-### Infrastructure
+- `strategies/stock-screener/`  
+  Modular stock screener with ranking, provider integrations, and CLI workflow
 
-- `resources/multi-account-manager/`: async manager, dashboard, persistence, and risk guardrails for running multiple paper-trading accounts
+- `strategies/orderbook/`  
+  Order-book imbalance strategy with tested backtest package
+
+- `strategies/fvg-breakout/`  
+  Fair Value Gap breakout strategy with active backtest CLI
+
+- `strategies/candlestick-pro/`  
+  Candlestick-pattern strategy with live analysis, scanning, fetch, and backtest modes
+
+### Resources
+
+- `resources/multi-account-manager/`  
+  Multi-account paper-trading manager with dashboard, persistence, and risk guardrails
 
 ## Repository Layout
 
@@ -31,6 +43,7 @@ algo-trade/
 |-- README.md
 |-- .gitignore
 |-- docs/
+|   `-- plans/
 |-- resources/
 |   `-- multi-account-manager/
 `-- strategies/
@@ -43,7 +56,7 @@ algo-trade/
 
 ## Getting Started
 
-Each strategy is currently self-contained and manages its own dependencies.
+Each strategy is self-contained. Install dependencies and run tests from the module you want to work on.
 
 ```powershell
 cd strategies/<strategy-name>
@@ -53,28 +66,46 @@ python -m pytest tests -q
 
 Examples:
 
-- `strategies/insider/`
-- `strategies/fvg-breakout/`
-- `strategies/candlestick-pro/`
-- `strategies/orderbook/`
-- `strategies/stock-screener/`
+```powershell
+cd strategies/fvg-breakout
+python run_backtest.py --help
+```
 
-For the orchestration layer:
+```powershell
+cd strategies/candlestick-pro
+python main.py --help
+```
+
+```powershell
+cd strategies/orderbook
+python -m pytest tests -q
+```
+
+For shared paper-trading orchestration:
 
 ```powershell
 cd resources/multi-account-manager
 copy .env.example .env
 pip install -r requirements.txt
-python main.py --no-dashboard
+python main.py --help
 ```
+
+## Verification
+
+The active modules reviewed in this cleanup pass were verified locally through combinations of:
+
+- `pytest`
+- `compileall`
+- CLI help checks
+- targeted local backtest runs
 
 ## Configuration
 
-- Use environment variables or local `.env` files for credentials.
-- Do not commit real API keys, SMTP passwords, or local machine paths.
-- Local-only data, logs, results, and legacy folders are excluded through `.gitignore`.
+- Use `.env.example` files as templates where provided.
+- Keep real credentials in local `.env` files or environment variables only.
+- Do not commit generated logs, state files, caches, result outputs, or local datasets.
 
 ## Notes
 
-- `docs/plans/2026-03-11-repository-curation-design.md` records the cleanup design used for this repository pass.
-- The current CI workflow lives in `.github/workflows/ci.yml` and covers several active strategy modules.
+- The repository cleanup design is recorded in `docs/plans/2026-03-11-repository-curation-design.md`.
+- The root CI workflow lives in `.github/workflows/ci.yml`.
