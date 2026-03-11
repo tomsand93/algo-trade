@@ -1,0 +1,78 @@
+# Python caches and tooling
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+**/.venv/
+**/venv/
+
+# Local secrets and machine-specific config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs and runtime state
+logs/
+*.log
+live_trading_logs/
+sessions/
+
+# Generated results and reports
+results/
+reports/
+runs/
+*.png
+*.jpg
+*.jpeg
+*.html
+
+# Local databases and exported data
+*.db
+*.sqlite
+*.sqlite3
+*.parquet
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+
+# Curated-repo exclusions: preserved locally, not intended for Git
+/archive/
+/research/
+/trading/
+/tradingView/
+/reference/
+/START_HERE.md
+/2026-03-11-repo-reorganization-design.md
+/docs/PRODUCTION_SYSTEM_SUMMARY.md
+/docs/SYSTEM_ANALYSIS_AND_RECOMMENDATIONS.md
+/docs/SYSTEM_ARCHITECTURE.md
+/docs/TRADING_SYSTEM_SUMMARY.md
+/docs/superpowers/
+/resources/shared/
+
+# Strategy-local non-core material
+/strategies/*/.env
+/strategies/*/archive/
+/strategies/*/results/
+/strategies/*/*.csv
+/strategies/*/*.json
+/strategies/*/*.png
+
+# Multi-account manager local outputs
+/resources/multi-account-manager/.env
+/resources/multi-account-manager/data/
+/resources/multi-account-manager/logs/

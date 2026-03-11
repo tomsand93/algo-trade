@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Lint ──────────────────────────────────────────────────────────────────
+  lint:
+    name: Flake8 Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install flake8
+        run: pip install flake8
+      - name: Lint insider/src
+        run: flake8 strategies/insider/src --max-line-length=120 --extend-ignore=E501,W503
+      - name: Lint fvg-breakout/src
+        run: flake8 strategies/fvg-breakout/src --max-line-length=120 --extend-ignore=E501,W503
+      - name: Lint candlestick-pro/src
+        run: flake8 strategies/candlestick-pro/src --max-line-length=120 --extend-ignore=E501,W503
+      - name: Lint orderbook/src
+        run: flake8 strategies/orderbook/src --max-line-length=120 --extend-ignore=E501,W503
+
+  # ── Test matrix ───────────────────────────────────────────────────────────
+  test:
+    name: Tests — ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: insider
+            working_dir: strategies/insider
+            requirements: requirements.txt
+            test_dir: tests
+            pythonpath: ""
+
+          - project: fvg-breakout
+            working_dir: strategies/fvg-breakout
+            requirements: requirements.txt
+            test_dir: tests
+            pythonpath: ""
+
+          - project: candlestick-pro
+            working_dir: strategies/candlestick-pro
+            requirements: requirements.txt
+            test_dir: tests
+            pythonpath: ""
+
+          - project: orderbook
+            working_dir: strategies/orderbook
+            requirements: requirements.txt
+            test_dir: tests
+            pythonpath: "src"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.working_dir }}
+        run: pip install -r ${{ matrix.requirements }}
+
+      - name: Run tests
+        working-directory: ${{ matrix.working_dir }}
+        env:
+          PYTHONPATH: ${{ matrix.pythonpath }}
+          # Prevent real broker connections in CI
+          ALPACA_API_KEY: "ci-placeholder"
+          ALPACA_API_SECRET: "ci-placeholder"
+        run: |
+          python -m pytest ${{ matrix.test_dir }} -v --tb=short \
+            --cov=src --cov-report=term-missing

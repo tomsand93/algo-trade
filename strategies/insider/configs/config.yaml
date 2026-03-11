@@ -1,0 +1,61 @@
+# Insider Trading Strategy Configuration
+
+# Strategy Parameters
+strategy:
+  name: "single_buy_threshold"
+  threshold_usd: 100000        # Minimum insider buy value in USD
+  min_dvol: 5000000            # Minimum average daily dollar volume (optional, set null to disable)
+
+# Backtest Settings
+backtest:
+  initial_cash: 100000         # Starting capital
+  position_size_pct: 0.10      # 10% of equity per trade
+  max_positions: 5             # Maximum concurrent positions
+  max_daily_new_positions: 3   # Max new positions per day
+  stop_loss_pct: 0.08          # 8% stop loss
+  take_profit_pct: 0.16        # 16% take profit
+  hold_bars: null              # Fixed holding period (null = use bracket exits)
+  max_hold_bars: 60            # Maximum holding period (bars)
+  commission_per_share: 0.005  # $0.005 per share
+  min_commission: 1.0          # $1 minimum commission
+  slippage_bps: 2              # 2 basis points slippage
+  fill_assumption: "worst"     # "worst", "best", or "open_first"
+  timeframe: "1D"              # "1D", "1H", or "15m"
+
+# Parameter Sweep Grid
+parameter_sweep:
+  threshold_usd: [25000, 50000, 100000, 250000, 500000]
+  stop_loss_pct: [0.05, 0.08, 0.10]
+  take_profit_pct: [0.10, 0.16, 0.20]
+
+# Paper Trading Settings
+paper_trading:
+  enabled: true
+  position_size_pct: 0.10
+  max_positions: 5
+  stop_loss_pct: 0.08
+  take_profit_pct: 0.16
+  max_hold_bars: 60
+  dry_run: false              # Set true to log without submitting orders
+  run_interval_seconds: 300    # 5 minutes between runs
+  state_file: "data/bot_state.json"
+  log_file: "logs/paper_trading.log"
+
+# Risk Management
+risk:
+  max_position_size_pct: 0.15  # Max single position as % of equity
+  max_total_exposure_pct: 0.95 # Max total exposure
+  daily_loss_limit_pct: null   # Daily loss limit (null = disabled)
+  max_drawdown_pct: 0.20       # Max drawdown before halt
+
+# Data Sources
+data:
+  insider_source: "secapi"     # "secapi" or "edgar"
+  price_provider: "yfinance"   # "yfinance" or "alpaca"
+  cache_dir: "data/cache"
+
+# Paths
+paths:
+  insider_data: "data/insider_transactions.json"
+  output_dir: "results"
+  logs_dir: "logs"
