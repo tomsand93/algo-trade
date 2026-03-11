@@ -1,40 +1,58 @@
 # algo-trade
 
-Standalone trading repository for active strategy code and supporting paper-trading infrastructure.
+Standalone algorithmic trading repository focused on active strategy development, backtesting, and paper-trading infrastructure.
 
-## Scope
+## Project Overview
 
-This repository keeps the Git-facing surface focused on:
+This repository is organized as a multi-strategy trading workspace rather than a single monolithic system.
 
-- active strategy modules under `strategies/`
-- shared execution and orchestration tooling under `resources/`
-- lightweight repository documentation under `docs/`
+The main idea is simple:
 
-Legacy research, archived experiments, local outputs, credentials, and machine-specific files are intentionally excluded from Git through `.gitignore`.
+- each strategy lives in its own self-contained module
+- each module can evolve, test, and run independently
+- shared operational tooling lives under `resources/`
+- non-core archives, scratch research, outputs, and local credentials stay out of the Git-facing surface
 
-## Active Modules
+The result is a cleaner repository that can function both as an active development workspace and as a presentable GitHub project.
 
-### Strategies
+## What This Repo Contains
 
-- `strategies/insider/`  
-  SEC insider-buy signal pipeline with backtest and paper-trading entry points
+- `strategies/`  
+  The main strategy library. Each folder contains a focused strategy with its own code, tests, configuration, and run instructions.
 
-- `strategies/stock-screener/`  
-  Modular stock screener with ranking, provider integrations, and CLI workflow
+- `resources/`  
+  Shared infrastructure used across strategies, especially for orchestration, account management, monitoring, and paper-trading workflows.
 
-- `strategies/orderbook/`  
-  Order-book imbalance strategy with tested backtest package
+- `docs/`  
+  Lightweight repository-level notes and planning documents.
 
-- `strategies/fvg-breakout/`  
-  Fair Value Gap breakout strategy with active backtest CLI
+## Active Strategies
 
-- `strategies/candlestick-pro/`  
-  Candlestick-pattern strategy with live analysis, scanning, fetch, and backtest modes
+### `strategies/insider/`
 
-### Resources
+Insider is an event-driven equities strategy built around SEC Form 4 insider purchase filings. It focuses on systematic extraction of open-market buy events, signal normalization, backtesting, and paper-trading workflows. Compared with the other modules, it is the most workflow-oriented strategy in the repo: data ingestion, signal generation, execution logic, and reporting are all separated into clear layers.
 
-- `resources/multi-account-manager/`  
-  Multi-account paper-trading manager with dashboard, persistence, and risk guardrails
+### `strategies/stock-screener/`
+
+Stock Screener is a modular equity ranking system rather than a direct execution strategy. It combines configurable screening criteria, ranking logic, provider adapters, and optional performance tracking so you can score a universe of stocks before taking discretionary or automated action elsewhere. It works well as a research and idea-generation layer inside the broader repo.
+
+### `strategies/orderbook/`
+
+Orderbook is an L2 microstructure strategy centered on order-book state, imbalance, and short-horizon directional probability estimation. Its core trading logic is packaged more formally than most of the repo, with a tested backtest path and CLI interface. The backtest path is active; paper mode is present but currently only a stub.
+
+### `strategies/fvg-breakout/`
+
+FVG Breakout is a rules-based intraday equities strategy built around Fair Value Gap structure after an opening-range break. It is intentionally strict and mechanical: break, gap formation, retest, confirmation, then fixed risk management. The active module now includes a maintained backtest CLI and a tested library surface, while older experimental scripts remain outside the curated active path.
+
+### `strategies/candlestick-pro/`
+
+Candlestick Pro is a candlestick-pattern trading module with multiple operating modes: live analysis, symbol scanning, market-data fetching, and historical backtesting. It is more discretionary-pattern-oriented than the other strategies, with support for pattern selection, timeframe logic, and richer CLI workflows. In practice, it serves as both a strategy module and a reusable pattern-analysis engine.
+
+## Shared Infrastructure
+
+### `resources/multi-account-manager/`
+
+Multi-Account Manager is the main shared orchestration layer in the repository. It is designed to run multiple strategy adapters against separate Alpaca paper accounts while tracking state, enforcing guardrails, and exposing a local dashboard. This makes it the operational glue between otherwise independent strategy modules.
 
 ## Repository Layout
 
