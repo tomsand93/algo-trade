@@ -17,8 +17,8 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from datetime import datetime, timedelta, timezone
-from typing import List, Optional
+from datetime import datetime, timedelta, timezone  # noqa: E402
+from typing import List, Optional  # noqa: E402
 
 try:
     from alpaca.data.historical.stock import StockHistoricalDataClient
@@ -32,7 +32,7 @@ except ImportError:
     print("          Install with: pip install alpaca-py")
 
 
-from src.models import Candle
+from src.models import Candle  # noqa: E402
 
 
 class AlpacaDataFetcher:

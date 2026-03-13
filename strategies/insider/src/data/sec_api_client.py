@@ -108,7 +108,7 @@ class SECAPIClient:
                         filing_date = date.fromisoformat(filing_date_str.split("T")[0])
                     else:
                         continue
-                except:
+                except Exception:
                     continue
 
                 # Get reporting owner info

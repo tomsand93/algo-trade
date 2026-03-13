@@ -31,9 +31,9 @@ class FairValueGap:
     candle_1_idx: int    # Index of first candle in sequence
     candle_2_idx: int    # Index of displacement candle
     candle_3_idx: int    # Index of third candle
-    entry_trigger: float # Price level for retest
-    stop_loss: float     # SL at first FVG candle
-    take_profit: float   # 3:1 R:R target
+    entry_trigger: float  # Price level for retest
+    stop_loss: float      # SL at first FVG candle
+    take_profit: float    # 3:1 R:R target
     valid: bool = True
 
 

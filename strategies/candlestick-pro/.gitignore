@@ -17,7 +17,7 @@ ENV/
 
 # Local strategy artifacts
 archive/
-data/
+/data/
 logs/
 results/
 .tmp*/

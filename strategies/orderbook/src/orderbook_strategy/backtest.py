@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 from .config import Config
-from .data_loader import load_orderbook, load_trades, merge_events, infer_trade_side
+from .data_loader import load_orderbook, load_trades, merge_events
 from .events import BookSnapshot, Event, Trade
 from .execution import ExecutionModel, Fill
 from .strategy import OrderbookStrategy, Signal

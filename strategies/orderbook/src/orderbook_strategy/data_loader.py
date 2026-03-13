@@ -61,7 +61,6 @@ def load_orderbook(path: Path) -> list[BookSnapshot]:
         price = float(row["price"])
         size = float(row["size"])
 
-        key = (ts, side_str)
         if side_str == "bid":
             snapshots_dict[ts]["bids"][level] = BookLevel(price=price, size=size)
         else:

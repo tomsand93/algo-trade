@@ -7,11 +7,10 @@ No lookahead bias, no survival bias, no discretion.
 
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict
-from datetime import datetime, date
 import pandas as pd
 import numpy as np
 
-from src.pattern_detection import PatternDetector, DailySetup, TradeSetup, validate_trading_window
+from src.pattern_detection import PatternDetector, TradeSetup
 from src.config import StrategyConfig
 
 

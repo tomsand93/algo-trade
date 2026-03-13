@@ -95,7 +95,7 @@ def paper(trades: Path, book: Path, config: Path | None):
     cfg = Config.from_yaml(config)
     logger = setup_logging(cfg.log_level)
 
-    logger.info(f"Starting paper trading simulation")
+    logger.info("Starting paper trading simulation")
 
     # TODO: Implement streaming interface
     logger.warning("Paper trading mode is a stub - streaming interface not yet implemented")

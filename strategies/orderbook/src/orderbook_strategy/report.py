@@ -1,14 +1,13 @@
 """Report generation for backtest results."""
 
 import json
-import os
 from pathlib import Path
 
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')  # Non-interactive backend
-import matplotlib.pyplot as plt
-import pandas as pd
+matplotlib.use('Agg')  # Non-interactive backend  # noqa: E402
+import matplotlib.pyplot as plt  # noqa: E402
+import pandas as pd  # noqa: E402
 
 
 def write_outputs(results: dict, output_dir: Path) -> None:

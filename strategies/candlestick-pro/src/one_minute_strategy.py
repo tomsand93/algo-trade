@@ -781,7 +781,7 @@ class OneMinuteCandlestickStrategy:
             # Relaxed mode: Allow price within 1.0*ATR of EMA zone
             zone_tolerance = ind.atr * self.cfg.TREND_PULLBACK_RELAXED_ZONE_ATR
             near_ema_zone = (c.close >= ema_zone_low - zone_tolerance and
-                           c.close <= ema_zone_high + zone_tolerance)
+                             c.close <= ema_zone_high + zone_tolerance)
         else:
             # Strict mode: Price must be IN EMA zone or within 0.2*ATR of EMA20
             in_value_zone = ema_zone_low <= c.close <= ema_zone_high

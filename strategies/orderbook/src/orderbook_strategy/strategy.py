@@ -1,7 +1,7 @@
 """Core orderbook trading strategy."""
 
-from dataclasses import dataclass, field
-from datetime import datetime
+from dataclasses import dataclass
+from datetime import datetime, timedelta
 from enum import Enum
 
 from .config import Config
@@ -428,6 +428,3 @@ class OrderbookStrategy:
             return (signal.entry_price - position.entry_price) * signal.quantity
         else:
             return (position.entry_price - signal.entry_price) * signal.quantity
-
-
-from datetime import timedelta  # Import at module level for use in strategy

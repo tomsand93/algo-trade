@@ -5,7 +5,7 @@ Comprehensive analysis and visualization of backtest results.
 """
 
 from dataclasses import dataclass
-from typing import List, Dict
+from typing import Dict
 import pandas as pd
 import numpy as np
 import json
@@ -25,7 +25,7 @@ class PerformanceAnalyzer:
     Analyzes backtest results and generates detailed reports.
     """
 
-    def __init__(self, result: "BacktestResult"):
+    def __init__(self, result: "BacktestResult"):  # noqa: F821
         self.result = result
         self.trades_df = self._trades_to_dataframe()
 
@@ -318,7 +318,7 @@ class PerformanceAnalyzer:
         print(f"Report saved to {filepath}")
 
 
-def plot_equity_curve(result: "BacktestResult", save_path: str = None) -> None:
+def plot_equity_curve(result: "BacktestResult", save_path: str = None) -> None:  # noqa: F821
     """
     Plot equity curve.
 
@@ -377,7 +377,7 @@ def plot_equity_curve(result: "BacktestResult", save_path: str = None) -> None:
     plt.close()
 
 
-def plot_r_multiple_distribution(result: "BacktestResult", save_path: str = None) -> None:
+def plot_r_multiple_distribution(result: "BacktestResult", save_path: str = None) -> None:  # noqa: F821
     """
     Plot R multiple distribution.
 

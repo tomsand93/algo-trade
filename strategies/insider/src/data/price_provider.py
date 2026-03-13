@@ -7,11 +7,12 @@ Supports:
 3. Local caching to minimize API calls
 """
 import os
+import time
 import logging
+import requests
 from datetime import date, datetime, timedelta
 from decimal import Decimal
-from typing import List, Optional, Dict, Any
-import json
+from typing import List, Optional, Any
 import pickle
 
 import pandas as pd

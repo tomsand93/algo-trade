@@ -2,7 +2,7 @@
 
 from collections import deque
 from dataclasses import dataclass, field
-from math import erf, exp, log, sqrt
+from math import erf, log, sqrt
 from typing import Optional
 
 import numpy as np
