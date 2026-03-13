@@ -43,6 +43,10 @@ data/*.json
 logs/*.log
 results/
 *.pkl
+!src/data/
+!src/data/__init__.py
+!src/data/price_provider.py
+!src/data/sec_api_client.py
 
 # OS
 .DS_Store
