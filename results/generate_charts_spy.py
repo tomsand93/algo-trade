@@ -94,6 +94,7 @@ def make_figure(title, ncols=1):
 
 
 def draw_equity(ax, dates, eq_norm, color=BLUE, label='Strategy', linewidth=1.3):
+    """Plot strategy line and fills. Call add_benchmark() then legend() afterwards."""
     ax.plot(dates, eq_norm, color=color, linewidth=linewidth, label=label, zorder=3)
     ax.axhline(100, color=MUTED, linewidth=0.7, linestyle=':', alpha=0.6)
     ax.fill_between(dates, 100, eq_norm,
@@ -101,9 +102,15 @@ def draw_equity(ax, dates, eq_norm, color=BLUE, label='Strategy', linewidth=1.3)
     ax.fill_between(dates, 100, eq_norm,
                     where=(np.array(eq_norm) < 100), alpha=0.12, color=RED)
     ax.set_ylabel('Value (Normalised to 100)', fontsize=11)
-    ax.legend(loc='upper left', framealpha=0.3, fontsize=10)
     ax.grid(True, alpha=0.3)
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+
+
+def finish_legend(ax):
+    """Call after all lines added so every label appears in the legend."""
+    ax.legend(loc='upper left', framealpha=0.6, fontsize=10,
+              facecolor=PANEL, edgecolor=BORDER,
+              labelcolor=TEXT, handlelength=2.2)
 
 
 def draw_drawdown(ax, dates, eq_norm):
@@ -118,8 +125,8 @@ def draw_drawdown(ax, dates, eq_norm):
 
 
 def add_benchmark(ax, dates, values, color=ORANGE, label='S&P 500 (SPY)'):
-    ax.plot(dates, values, color=color, linewidth=1.2,
-            linestyle='--', alpha=0.85, label=label, zorder=2)
+    ax.plot(dates, values, color=color, linewidth=1.5,
+            linestyle='--', alpha=0.9, label=label, zorder=2)
 
 
 def trades_to_daily_equity(dates, pnls, start_capital, date_range_start, date_range_end):
@@ -156,6 +163,7 @@ spy_norm = normalize(spy_c.values)
 fig, ax1, ax2 = make_figure('Stock Momentum ETF vs S&P 500  (2023–2026, Monthly Rebalance)')
 draw_equity(ax1, common, eq_norm, label='Stock Momentum ETF')
 add_benchmark(ax1, common, spy_norm)
+finish_legend(ax1)
 draw_drawdown(ax2, common, eq_norm)
 
 strat_ret = scalar(eq_norm[-1]) - 100
@@ -194,6 +202,7 @@ fig, ax1, ax2 = make_figure('BDB DCA — BTC/USDT 30m vs S&P 500 & BTC  (2025)')
 draw_equity(ax1, eq_win.index, eq_norm, label='BDB DCA')
 add_benchmark(ax1, spy_a.index, spy_norm)
 add_benchmark(ax1, btc_a.index, btc_norm, color=GOLD, label='BTC Buy & Hold')
+finish_legend(ax1)
 draw_drawdown(ax2, eq_win.index, eq_norm)
 
 strat_ret = scalar(eq_norm[-1]) - 100
@@ -228,6 +237,7 @@ spy_norm = normalize(spy_a.values)
 fig, ax1, ax2 = make_figure('Insider Buy Signal — SEC Form 4 vs S&P 500  (2023–2024)')
 draw_equity(ax1, dates_i, eq_norm, label='Insider Strategy')
 add_benchmark(ax1, spy_a.index, spy_norm)
+finish_legend(ax1)
 draw_drawdown(ax2, dates_i, eq_norm)
 
 trades_info = bt.get('trades', {})
@@ -265,6 +275,7 @@ spy_norm = normalize(spy_a.loc[common].values)
 fig, ax1, ax2 = make_figure('FVG Breakout (Config C: Both Dirs, No Break-Even) vs S&P 500  (Feb 2025 – Jan 2026)')
 draw_equity(ax1, common, eq_norm, label='FVG Breakout (Config C)')
 add_benchmark(ax1, common, spy_norm)
+finish_legend(ax1)
 draw_drawdown(ax2, common, eq_norm)
 
 strat_ret = scalar(eq_norm[-1]) - 100
@@ -326,6 +337,7 @@ if rows:
     draw_equity(ax1, common, eq_norm, label='Candlestick Pro (live config)')
     add_benchmark(ax1, common, spy_norm)
     add_benchmark(ax1, common, btc_norm, color=GOLD, label='BTC Buy & Hold')
+    finish_legend(ax1)
     ax1.text(0.5, 0.48, 'IN DEVELOPMENT — Not profitable\nNeeds strict_trend=True fix',
              transform=ax1.transAxes, ha='center', va='center', fontsize=12,
              color=RED, alpha=0.3, fontweight='bold', rotation=15)
