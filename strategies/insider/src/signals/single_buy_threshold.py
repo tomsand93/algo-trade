@@ -36,6 +36,7 @@ class SingleBuyThresholdSignal:
         min_dvol: Optional[Decimal] = None,
         price_provider: Optional[Any] = None,
         require_prices: bool = True,
+        require_single_buyer: bool = False,
     ):
         """
         Initialize signal generator.
@@ -50,6 +51,7 @@ class SingleBuyThresholdSignal:
         self.min_dvol = min_dvol
         self.price_provider = price_provider
         self.require_prices = require_prices
+        self.require_single_buyer = require_single_buyer
 
         # Track signal counts and skip reasons
         self.stats = defaultdict(int)
@@ -94,23 +96,28 @@ class SingleBuyThresholdSignal:
             key = (txn.ticker, txn.transaction_date)
             buys_by_ticker_date[key].append(txn)
 
-        # Step 3: Apply single-buy constraint
-        # Keep only ticker+date pairs with EXACTLY ONE qualifying buy
-        single_buy_pairs = {
-            key: txns
-            for key, txns in buys_by_ticker_date.items()
-            if len(txns) == 1
-        }
-
-        skipped_multiple = len(buys_by_ticker_date) - len(single_buy_pairs)
-        self.stats["skipped_multiple_buys"] = skipped_multiple
-        logger.info(f"Single-buy pairs: {len(single_buy_pairs)}, skipped {skipped_multiple} with multiple buys")
+        # Step 3: Apply single-buy constraint (optional) or aggregate clustered buys
+        if self.require_single_buyer:
+            qualified_pairs = {
+                key: txns
+                for key, txns in buys_by_ticker_date.items()
+                if len(txns) == 1
+            }
+            skipped_multiple = len(buys_by_ticker_date) - len(qualified_pairs)
+            self.stats["skipped_multiple_buys"] = skipped_multiple
+            logger.info(f"Single-buy pairs: {len(qualified_pairs)}, skipped {skipped_multiple} with multiple buys")
+        else:
+            qualified_pairs = buys_by_ticker_date
+            clustered = sum(1 for txns in qualified_pairs.values() if len(txns) > 1)
+            logger.info(f"All pairs: {len(qualified_pairs)} ({clustered} with clustered buys)")
 
         # Step 4: Apply threshold and liquidity filters
         signals = []
 
-        for (ticker, txn_date), txns in single_buy_pairs.items():
-            txn = txns[0]  # Only one transaction in the list
+        for (ticker, txn_date), txns in qualified_pairs.items():
+            # Aggregate multiple transactions into one representative transaction
+            txn = self._aggregate_transactions(txns)
+            insider_count = len(txns)
 
             # Check value threshold
             if txn.value_usd < self.threshold_usd:
@@ -177,6 +184,7 @@ class SingleBuyThresholdSignal:
                 insider_name=txn.insider_name,
                 shares=txn.shares,
                 price_per_share=price,
+                insider_count=insider_count,
             )
             signals.append(signal)
 
@@ -184,6 +192,32 @@ class SingleBuyThresholdSignal:
         self._log_stats()
 
         return signals
+
+    def _aggregate_transactions(self, txns: list) -> "InsiderTransaction":
+        """
+        Collapse multiple same-day transactions for a ticker into one representative transaction.
+        For clustered buys, total value reflects combined insider conviction.
+        """
+        if len(txns) == 1:
+            return txns[0]
+
+        from dataclasses import replace as dc_replace
+
+        total_shares = sum(t.shares for t in txns)
+        total_value = sum(t.value_usd for t in txns)
+        avg_price = total_value / total_shares if total_shares > 0 else Decimal("0")
+
+        # Use earliest filing date so signal is actionable as soon as first filer reports
+        lead = min(txns, key=lambda t: t.filing_date)
+        insider_name = f"Multiple insiders ({len(txns)})"
+
+        return dc_replace(
+            lead,
+            shares=total_shares,
+            total_value=total_value,
+            price_per_share=avg_price,
+            insider_name=insider_name,
+        )
 
     def _get_next_trading_day(self, input_date: date) -> date:
         """

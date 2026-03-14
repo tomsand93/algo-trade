@@ -70,8 +70,8 @@ class InsiderTransaction:
 @dataclass(frozen=True)
 class InsiderSignal:
     """
-    A trading signal based on a single insider buy event.
-    Per spec: exactly ONE qualifying buy for ticker+date.
+    A trading signal based on one or more insider buy events for a ticker+date.
+    insider_count > 1 means clustered buying (multiple insiders same day).
     """
     ticker: str
     signal_date: date  # Date signal becomes actionable
@@ -81,6 +81,7 @@ class InsiderSignal:
     insider_name: str
     shares: Decimal
     price_per_share: Decimal
+    insider_count: int = 1  # Number of insiders who bought (>1 = clustered signal)
 
     def __post_init__(self):
         """Validate signal meets criteria."""
