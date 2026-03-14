@@ -107,12 +107,13 @@ class TestSingleBuyThresholdSignal:
         assert signals[0].buy_value_usd == Decimal("150000")
 
     def test_multiple_bys_same_day_skipped(self):
-        """Multiple buys on same ticker/day should be skipped."""
+        """Multiple buys on same ticker/day should be skipped when require_single_buyer=True."""
         signal_gen = SingleBuyThresholdSignal(
             threshold_usd=Decimal("100000"),
             min_dvol=None,
             price_provider=None,
             require_prices=False,
+            require_single_buyer=True,
         )
 
         transactions = [

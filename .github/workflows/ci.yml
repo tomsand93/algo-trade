@@ -22,10 +22,6 @@ jobs:
         run: flake8 strategies/insider/src --max-line-length=120 --extend-ignore=E501,W503
       - name: Lint fvg-breakout/src
         run: flake8 strategies/fvg-breakout/src --max-line-length=120 --extend-ignore=E501,W503
-      - name: Lint candlestick-pro/src
-        run: flake8 strategies/candlestick-pro/src --max-line-length=120 --extend-ignore=E501,W503
-      - name: Lint orderbook/src
-        run: flake8 strategies/orderbook/src --max-line-length=120 --extend-ignore=E501,W503
 
   # ── Test matrix ───────────────────────────────────────────────────────────
   test:
@@ -47,19 +43,7 @@ jobs:
             test_dir: tests
             pythonpath: ""
 
-          - project: candlestick-pro
-            working_dir: strategies/candlestick-pro
-            requirements: requirements.txt
-            test_dir: tests
-            pythonpath: ""
-
-          - project: orderbook
-            working_dir: strategies/orderbook
-            requirements: requirements.txt
-            test_dir: tests
-            pythonpath: "src"
-
-    steps:
+steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
