@@ -272,10 +272,45 @@ common = eq_fvg.index.intersection(spy_a.index)
 eq_norm  = normalize(eq_fvg.loc[common].values)
 spy_norm = normalize(spy_a.loc[common].values)
 
-fig, ax1, ax2 = make_figure('FVG Breakout (Config C: Both Dirs, No Break-Even) vs S&P 500  (Feb 2025 – Jan 2026)')
-draw_equity(ax1, common, eq_norm, label='FVG Breakout (Config C)')
-add_benchmark(ax1, common, spy_norm)
-finish_legend(ax1)
+# FVG is nearly flat (+0.43%) — use dual y-axis so the small strategy
+# movements don't get crushed by SPY's 17% range on a shared axis.
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 8), height_ratios=[3, 1], facecolor=DARK)
+fig.suptitle('FVG Breakout (Config C: Both Dirs, No Break-Even) vs S&P 500  (Feb 2025 – Jan 2026)',
+             fontsize=14, color=TEXT, fontweight='bold')
+ax1.set_facecolor(PANEL)
+ax2.set_facecolor(PANEL)
+
+# Strategy on left y-axis — zoom to its own range
+margin = max(0.5, (eq_norm.max() - eq_norm.min()) * 0.3)
+ax1.set_ylim(eq_norm.min() - margin, eq_norm.max() + margin)
+ax1.plot(common, eq_norm, color=BLUE, linewidth=1.3, label='FVG Breakout (Config C)', zorder=3)
+ax1.axhline(100, color=MUTED, linewidth=0.7, linestyle=':', alpha=0.6)
+ax1.fill_between(common, 100, eq_norm,
+                 where=(eq_norm >= 100), alpha=0.2, color=GREEN)
+ax1.fill_between(common, 100, eq_norm,
+                 where=(eq_norm < 100), alpha=0.2, color=RED)
+ax1.set_ylabel('Strategy (Normalised to 100)', fontsize=11, color=BLUE)
+ax1.tick_params(axis='y', colors=BLUE)
+ax1.grid(True, alpha=0.3)
+ax1.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+
+# SPY on right y-axis — its own independent scale
+ax1r = ax1.twinx()
+ax1r.set_facecolor('none')
+ax1r.plot(common, spy_norm, color=ORANGE, linewidth=1.5, linestyle='--',
+          alpha=0.9, label='S&P 500 (SPY)', zorder=2)
+ax1r.set_ylabel('S&P 500 (Normalised to 100)', fontsize=11, color=ORANGE)
+ax1r.tick_params(axis='y', colors=ORANGE)
+ax1r.spines['right'].set_color(BORDER)
+
+# Combined legend from both axes
+lines1, labs1 = ax1.get_legend_handles_labels()
+lines2, labs2 = ax1r.get_legend_handles_labels()
+ax1.legend(lines1 + lines2, labs1 + labs2,
+           loc='upper left', framealpha=0.6, fontsize=10,
+           facecolor=PANEL, edgecolor=BORDER, labelcolor=TEXT)
+
+# Drawdown panel
 draw_drawdown(ax2, common, eq_norm)
 
 strat_ret = scalar(eq_norm[-1]) - 100
