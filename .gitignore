@@ -49,13 +49,15 @@ Thumbs.db
 # Documentation — not tracked
 *.md
 
-# Non-working / experimental strategies — local only
+# Non-profitable / unfinished strategies — local only
 /strategies/bdb-dca/
 /strategies/polymarket/
 /strategies/polymarket-copy/
 /strategies/stock-momentum/
 /strategies/stock-screener/
 /strategies/archive/
+/strategies/candlestick-pro/
+/strategies/orderbook/
 /docs/
 /resources/
 
